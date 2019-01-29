@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.senyint.mybatis.mapper.LeaveBillMapper">
+
+	<resultMap type="com.senyint.mybatis.entity.LeaveBill" id="leaveBillEmployeeResultMap">
+		<!-- 完成了订单信息的映射配置 -->
+		<!-- id：订单关联用户查询的唯 一 标识  -->
+		<id column="l_id" property="id"/>
+		<result column="l_days" property="days"/>
+		<result column="l_content" property="content"/>
+		<result column="l_leave_date" property="leaveDate"/>
+		<result column="l_remark" property="remark"/>
+		<result column="l_state" property="state"/>
+		
+		<!-- 下边完成关联信息的映射
+		association：用于对关联信息映射到单个pojo
+		property：要将关联信息映射到orders的哪个属性中
+		javaType：关联信息映射到orders的属性的类型，是user的类型
+		 -->
+		<association property="user" javaType="com.senyint.mybatis.entity.Employee">
+			<!-- id：关联信息的唯 一标识  -->
+			<!-- property： 要映射到user的哪个属性中-->
+			<id column="e_id" property="id"/>
+			<!-- result就是普通列的映射 -->
+			<result column="e_name" property="name"/>
+			<result column="e_password" property="password"/>
+			<result column="e_email" property="email"/>
+			<result column="e_role" property="role"/>
+			<result column="e_manager" property="managerId"/>
+		</association>
+	</resultMap>
+	
+	<select id="findLeaveBillList" parameterType="string" resultMap="leaveBillEmployeeResultMap">
+	
+		select l.id as l_id,
+		l.content as l_content,
+		l.days as l_days,
+		l.leave_date as l_leave_date,
+		l.remark as l_remark,
+		l.state as l_state,
+		l.user_id as l_user_id,
+		e.id as e_id,
+		e.email as e_email,
+		e.name as e_name,
+		e.password as e_password,
+		e.role as e_role,
+		e.manager_id as e_manager
+		from LEAVEBILL l join EMPLOYEE e on (e.id = l.user_id)
+		<if test="userId!=null and userId!=''">
+			where e.id = #{userId}
+		</if>
+	</select>
+
+	<insert id="saveLeaveBill" parameterType="com.senyint.mybatis.entity.LeaveBill">
+		<selectKey keyProperty="id" order="BEFORE" resultType="long">
+			select activiti_seq.nextval from dual
+		</selectKey>
+		
+		insert into leavebill(ID,days,content,leave_date,remark,state,user_id)
+		values(TO_CHAR(#{id}),#{days},#{content},#{leaveDate},#{remark},#{state},#{user.id})
+		
+	</insert>
+	
+	<select id="findLeaveBillById" parameterType="long" resultMap="leaveBillEmployeeResultMap">
+		select l.id as l_id,
+		l.content as l_content,
+		l.days as l_days,
+		l.leave_date as l_leave_date,
+		l.remark as l_remark,
+		l.state as l_state,
+		l.user_id as l_user_id,
+		e.id as e_id,
+		e.email as e_email,
+		e.name as e_name,
+		e.password as e_password,
+		e.role as e_role,
+		e.manager_id as e_manager
+		from LEAVEBILL l join EMPLOYEE e on (e.id = l.user_id)
+		where l.id = #{id}
+	</select>
+	
+	<update id="updateLeaveBill" parameterType="com.senyint.mybatis.entity.LeaveBill">
+		update leavebill l
+		set l.content = #{content},
+		    l.days = #{days},
+		    l.leave_date = #{leaveDate},
+		    l.remark = #{remark},
+		    l.state = #{state},
+		    l.user_id = #{user.id}
+		where l.id = #{id}
+	</update>
+	
+	
+	
+	
+</mapper>

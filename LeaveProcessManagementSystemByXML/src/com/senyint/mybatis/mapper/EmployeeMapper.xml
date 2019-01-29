@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.senyint.mybatis.mapper.EmployeeMapper">
+	
+	<select id="findEmployeeByName" parameterType="string" resultType="com.senyint.mybatis.entity.Employee">
+	
+		select t.id,
+		t.email,
+		t.name,
+		t.password,
+		t.role,
+		t.manager_id as managerId
+		from EMPLOYEE t 
+		where name = #{0}
+		
+	</select>
+	
+	<select id="findEmployeeById" parameterType="string" resultType="com.senyint.mybatis.entity.Employee">
+	
+		select t.id,
+		t.email,
+		t.name,
+		t.password,
+		t.role,
+		t.manager_id as managerId
+		from EMPLOYEE t 
+		where id = #{0}
+		
+	</select>
+	
+
+</mapper>
