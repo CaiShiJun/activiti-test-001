@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+  xmlns:jee="http://www.springframework.org/schema/jee" xmlns:aop="http://www.springframework.org/schema/aop"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+       http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+
+	<!--  
+		//2.设置数据库连接信息
+		//设置数据库驱动
+		processEngineConfiguration.setJdbcDriver("oracle.jdbc.driver.OracleDriver");
+		//设置数据库地址
+		processEngineConfiguration.setJdbcUrl("jdbc:oracle:thin:@127.0.0.1:1521:orcl");
+		//设置数据库连接用户名
+		processEngineConfiguration.setJdbcUsername("scott_mytest_004");
+		//设置数据库连接密码
+		processEngineConfiguration.setJdbcPassword("oracle");
+		//设置数据库建表策略
+		/**
+		 * DB_SCHEMA_UPDATE_TRUE = "true"	//如果不存在表就创建表，存在就直接使用。
+		 * DB_SCHEMA_UPDATE_FALSE = "false"	//如果不存在表就抛出异常。
+		 * DB_SCHEMA_UPDATE_CREATE_DROP = "create-drop"	//每次都先删除表，再创建新的表。
+		 */
+		processEngineConfiguration.setDatabaseSchemaUpdate(processEngineConfiguration.DB_SCHEMA_UPDATE_TRUE);
+	
+	-->
+	<bean id="processEngineConfiguration" class="org.activiti.engine.impl.cfg.StandaloneProcessEngineConfiguration">
+		<!-- 连接Oracle数据库的配置 -->
+		<property name="jdbcDriver" value="oracle.jdbc.driver.OracleDriver"></property>
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@127.0.0.1:1521:orcl"></property>
+		<property name="jdbcUsername" value="scott_mytest_004"></property>
+		<property name="jdbcPassword" value="oracle"></property>
+		<!-- 建表策略 -->
+		<property name="databaseSchemaUpdate" value="true"></property>
+	</bean>
+  
+</beans>
